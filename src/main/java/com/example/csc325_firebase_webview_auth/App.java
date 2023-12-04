@@ -1,7 +1,10 @@
 package com.example.csc325_firebase_webview_auth;
 
 
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import java.io.IOException;
 import javafx.application.Application;
@@ -10,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
+/*
  * JavaFX App
  */
 public class App extends Application {
@@ -20,11 +23,12 @@ public class App extends Application {
     public static Scene scene;
     private final FirestoreContext contxtFirebase = new FirestoreContext();
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         fstore = contxtFirebase.firebase();
         fauth = FirebaseAuth.getInstance();
-        scene = new Scene(loadFXML("AccessFBView.fxml"));
+        scene = new Scene(loadFXML("signingIn.fxml"));
         primaryStage.setScene(scene);
         primaryStage.show();
     }
