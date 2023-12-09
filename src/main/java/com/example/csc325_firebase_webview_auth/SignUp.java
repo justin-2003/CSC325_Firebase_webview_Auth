@@ -1,33 +1,52 @@
 package com.example.csc325_firebase_webview_auth;
 
+import com.example.csc325_firebase_webview_auth.models.User;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class SignUp {
     @FXML
     TextField signUpPassword,signUpEmail,signUpName,signUpPhone;
-    public boolean registerUser() {
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
-                .setEmail(signUpEmail.getText())
-                .setEmailVerified(false)
-                .setPassword(signUpPassword.getText())
-                .setPhoneNumber("+" + signUpPhone.getText())
-                .setDisplayName(signUpName.getText())
-                .setDisabled(false);
-        try {
-            UserRecord userRecord = App.fauth.createUser(request);
-            System.out.println("Successfully created new user:");
-            System.out.println("UID: " + userRecord.getUid());
-            System.out.println("Email: " + userRecord.getEmail());
-            System.out.println("Display Name: " + userRecord.getDisplayName());
-            return true;
-        } catch (FirebaseAuthException ex) {
-            System.out.println("Error creating user: " + ex.getMessage());
-            ex.printStackTrace();
-            // Log the error or display a user-friendly message
-            return false;
+
+    @FXML
+    Label label;
+    public void onLoginButtonClick(ActionEvent e) throws IOException, ExecutionException, InterruptedException {
+
+        if (signUpEmail.getText().equals("") || signUpName.getText().equals("") || signUpPassword.getText().equals("")) {
+            label.setText("You are missing fields! Try again!");
+        }
+
+        else {
+            UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                    .setEmail(signUpEmail.getText())
+                    .setEmailVerified(false)
+                    .setPassword(signUpPassword.getText())
+                    .setDisplayName(signUpName.getText())
+                    .setDisabled(false);
+
+            UserRecord userRecord;
+            try {
+                userRecord = App.fauth.createUser(request);
+                User.getUser().setName(signUpName.getText());
+                System.out.println("Successfully created new user: " + userRecord.getUid());
+                App.setRoot("AccessFBView.fxml");
+            } catch (FirebaseAuthException ex) {
+                label.setText("Unable to make a new account! Try Again!");
+                System.out.println(ex);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@
 package com.example.csc325_firebase_webview_auth.modelview;
 
 import com.example.csc325_firebase_webview_auth.App;
+import com.example.csc325_firebase_webview_auth.models.User;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
@@ -102,7 +103,7 @@ public class WebContainerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        label.setText("Welcome, " + User.getUser().getName());
         try {
             webEngine = webView.getEngine();
                       //  webView.setContextMenuEnabled(false);

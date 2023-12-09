@@ -2,6 +2,7 @@ package com.example.csc325_firebase_webview_auth.modelview;//package modelview;
 
 import com.example.csc325_firebase_webview_auth.App;
 import com.example.csc325_firebase_webview_auth.models.Person;
+import com.example.csc325_firebase_webview_auth.models.User;
 import com.example.csc325_firebase_webview_auth.viewmodel.AccessDataViewModel;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
@@ -26,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -44,6 +46,8 @@ public class AccessFBView {
     private Button readButton;
     @FXML
     private TextArea outputField;
+    @FXML
+    private Label hiTag;
      private boolean key;
     private ObservableList<Person> listOfUsers = FXCollections.observableArrayList();
     private Person person;
@@ -51,12 +55,14 @@ public class AccessFBView {
         return listOfUsers;
     }
 
+    @FXML
     void initialize() {
-
         AccessDataViewModel accessDataViewModel = new AccessDataViewModel();
         nameField.textProperty().bindBidirectional(accessDataViewModel.userNameProperty());
         majorField.textProperty().bindBidirectional(accessDataViewModel.userMajorProperty());
         writeButton.disableProperty().bind(accessDataViewModel.isWritePossibleProperty().not());
+        hiTag.setText("Welcome, " + User.getUser().getName());
+
     }
 
     @FXML
@@ -134,7 +140,8 @@ public class AccessFBView {
         public void sendVerificationEmail() {
         try {
             UserRecord user = App.fauth.getUser("name");
-            //String url = user.getPassword();
+            //
+            // String url = user.getPassword();
 
         } catch (Exception e) {
         }
@@ -160,6 +167,10 @@ public class AccessFBView {
             return false;
         }
 
+    }
+
+    public void closeProgram(){
+         System.exit(0);
     }
 
 
